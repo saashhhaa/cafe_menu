@@ -1,7 +1,12 @@
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
+import { getLanguage, texts } from "../lang";
 
 export const ChangeLanguage = () => {
-    return <>
-    <Link to="/">Изменить язык</Link>
+  const lang = getLanguage();
+
+  return (
+    <>
+      <Link to="/">{texts.changeLang[lang]}</Link>
     </>
-}
+  );
+};
