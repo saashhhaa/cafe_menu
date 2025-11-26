@@ -26,3 +26,26 @@ app.post("/api/users", async (req, res) => {
 });
 
 app.listen(5000, () => console.log("Server running on port 5000"));
+
+
+async function addCategory(name) {
+  const res = await fetch("http://localhost:5000/categories", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name })
+  });
+
+  const data = await res.json();
+  console.log("Категория создана", data);
+}
+
+async function addPosition(categoryId, name) {
+  const res = await fetch("http://localhost:5000/positions", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ categoryId, name })
+  });
+
+  const data = await res.json();
+  console.log("Позиция создана", data);
+}
