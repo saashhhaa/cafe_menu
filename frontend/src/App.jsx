@@ -8,7 +8,7 @@ import { LogInHandler } from "./pages/LogInHandle";
 export const App = () => {
   return (
     <BrowserRouter>
-      <Routes>
+      <Routes basename="/cafe_menu">
         <Route path="/" element={<Language />} />
         <Route path="/categories" element={<Categories />} />
         <Route path="/categories/:categoryId" element={<Positions />} />
