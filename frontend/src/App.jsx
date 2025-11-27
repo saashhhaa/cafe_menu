@@ -7,8 +7,8 @@ import { LogInHandler } from "./pages/LogInHandle";
 
 export const App = () => {
   return (
-    <BrowserRouter>
-      <Routes basename="/cafe_menu">
+    <BrowserRouter basename="/cafe_menu">
+      <Routes >
         <Route path="/" element={<Language />} />
         <Route path="/categories" element={<Categories />} />
         <Route path="/categories/:categoryId" element={<Positions />} />
