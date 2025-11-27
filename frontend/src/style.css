@@ -1,0 +1,173 @@
+* {
+    font-family: sans-serif;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.langPage {
+    display: flex;
+    flex-direction: column;
+    gap: 10px
+}
+
+
+
+/* --- Общий контейнер страницы --- */
+.categoryPage,
+.positionsPage {
+    width: 90vw;
+    height: 100%;
+    padding: 20px 40px;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+/* --- Верхняя панель --- */
+.categoryPage nav,
+.positionsPage nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* --- Заголовки --- */
+.categoryPage h2,
+.positionsPage h2 {
+    margin-bottom: 20px;
+    font-size: 26px;
+    font-weight: 600;
+}
+
+/* --- Форма ввода --- */
+.categoryPage input,
+.positionsPage input {
+    display: block;
+    width: 300px;
+    margin-bottom: 12px;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #aaa;
+    font-size: 16px;
+}
+
+.categoryPage button,
+.positionsPage button {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    background-color: #333;
+    color: white;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+.categoryPage button:hover,
+.positionsPage button:hover {
+    background-color: #555;
+}
+
+hr {
+    margin: 20px 0;
+}
+
+/* --- Список категорий / позиций --- */
+.categoriesList {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+/* --- Карточка --- */
+.category {
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    background: #fafafa;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.category img {
+    border-radius: 10px;
+    width: 100%;
+    height: auto;
+}
+
+.loginPage {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.loginPage nav {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.loginPage input {
+    width: 280px;
+    padding: 10px 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+.loginPage button {
+    width: 280px;
+    padding: 10px;
+    border: none;
+    background: #333;
+    color: white;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.loginPage button:hover {
+    background: #444;
+}
+
+.loginPage h1 {
+    margin-top: 20px;
+    font-size: 22px;
+}
+
+
+.langPage {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    background: var(--bg); /* Можно использовать общий фон */
+    color: var(--text);
+    font-size: 20px;
+}
+
+.langPage a {
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    background: rgba(209, 190, 190, 0.449);
+    color: #000;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.langPage a:hover {
+    background: var(--accent-light);
+}

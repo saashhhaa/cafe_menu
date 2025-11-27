@@ -9,13 +9,13 @@ export const Language = () => {
   };
 
   return (
-    <>
+    <div className="langPage">
       <Link to="/categories" onClick={ruHandler}>
         Русский
       </Link>
       <Link to="/categories" onClick={engHandler}>
         English
       </Link>
-    </>
+    </div>
   );
 };

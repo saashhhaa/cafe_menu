@@ -64,9 +64,12 @@ export const Categories = () => {
   };
 
   return (
-    <>
-      <ChangeLanguage />
-      <Login />
+    <div className="categoryPage">
+      <nav>
+        <ChangeLanguage />
+        <Login />
+      </nav>
+
       <h2>{texts.pageTitle[lang]}</h2>
 
       <input
@@ -102,6 +105,7 @@ export const Categories = () => {
             )}
 
             <button
+              className=""
               onClick={() => deleteHandler(cat.id)}
               style={{ visibility: isLogged ? "visible" : "hidden" }}>
               {texts.delete[lang]}
@@ -109,6 +113,6 @@ export const Categories = () => {
           </div>
         ))}
       </div>
-    </>
+    </div>
   );
 };

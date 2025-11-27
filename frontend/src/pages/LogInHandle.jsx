@@ -35,7 +35,7 @@ export const LogInHandler = () => {
   };
 
   return (
-    <>
+    <div className="loginPage">
       <Link to="/categories">{texts.goBack[lang]}</Link>
       <input
         type="text"
@@ -61,6 +61,6 @@ export const LogInHandler = () => {
       <h1 style={{ visibility: isLogged ? "visible" : "hidden" }}>
         Добро пожаловать, {login}!
       </h1>
-    </>
+    </div>
   );
 };

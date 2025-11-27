@@ -65,11 +65,13 @@ export const Positions = () => {
   };
 
   return (
-    <div>
-      <ChangeLanguage />
-      <Login />
+    <div className="positionsPage">
+      <nav>
+        <Link to="/categories">{texts.goBack[lang]}</Link>
+        <ChangeLanguage />
+        <Login />
+      </nav>
 
-      <Link to="/categories">{texts.goBack[lang]}</Link>
       <h2>{texts.pageTitle[lang]}</h2>
 
       <input
