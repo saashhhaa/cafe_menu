@@ -1,5 +1,6 @@
 {
   "name": "cafe_menu",
+  "homepage": "/cafe_menu/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
