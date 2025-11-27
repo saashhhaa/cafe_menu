@@ -66,6 +66,8 @@ export const Positions = () => {
   return (
     <div>
       <ChangeLanguage />
+      <Login />
+
       <Link to="/categories">{texts.goBack[lang]}</Link>
       <h2>{texts.pageTitle[lang]}</h2>
 
@@ -119,8 +121,7 @@ export const Positions = () => {
             <div>{pos.cost}</div>
             <button
               onClick={() => deleteHandler(pos.id)}
-              style={{ visibility: isLogged ? "visible" : "hidden" }}
-              >
+              style={{ visibility: isLogged ? "visible" : "hidden" }}>
               {texts.delete[lang]}
             </button>
           </div>
