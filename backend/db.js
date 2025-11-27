@@ -21,4 +21,20 @@ db.prepare(`
   )
 `).run();
 
+db.prepare(`
+  CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    login TEXT UNIQUE, 
+    password TEXT
+
+  )
+`).run();
+
+db.prepare(`
+  INSERT OR IGNORE INTO users (login, password)
+  VALUES ('admin', '1234')
+`).run();
+
+
+
 module.exports = db;

@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ChangeLanguage } from "../components/ChangeLang";
 import { getLanguage, texts } from "../lang";
+import { getLogIn } from "../pages/LogInHandle";
 
 export const Positions = () => {
+  const isLogged = getLogIn();
   const lang = getLanguage();
   const { categoryId } = useParams();
   const [positions, setPositions] = useState([]);
@@ -12,15 +14,13 @@ export const Positions = () => {
   const [cost, setCost] = useState(0);
   const [image, setImage] = useState(null);
 
-  // Загрузка позиций для выбранной категории
   useEffect(() => {
     if (!categoryId) return;
     fetch(`http://localhost:5000/positions?categoryId=${categoryId}`)
-      .then(res => res.json())
-      .then(data => setPositions(data));
+      .then((res) => res.json())
+      .then((data) => setPositions(data));
   }, [categoryId]);
 
-  // Добавление позиции
   const addPositionHandler = async () => {
     if (!title) return;
 
@@ -50,7 +50,6 @@ export const Positions = () => {
     setImage(null);
   };
 
-  // Удаление позиции
   const deleteHandler = async (id) => {
     const res = await fetch(`http://localhost:5000/positions/${id}`, {
       method: "DELETE",
@@ -75,28 +74,36 @@ export const Positions = () => {
         placeholder={texts.setName[lang]}
         value={title}
         onChange={(e) => setTitle(e.target.value)}
+        style={{ visibility: isLogged ? "visible" : "hidden" }}
       />
       <input
         type="text"
         placeholder={texts.setContent[lang]}
         value={content}
         onChange={(e) => setContent(e.target.value)}
+        style={{ visibility: isLogged ? "visible" : "hidden" }}
       />
       <input
         type="number"
         placeholder={texts.setCost[lang]}
         value={cost}
         onChange={(e) => setCost(Number(e.target.value))}
+        style={{ visibility: isLogged ? "visible" : "hidden" }}
       />
       <input
         type="file"
         accept="image/*"
         onChange={(e) => setImage(e.target.files[0])}
+        style={{ visibility: isLogged ? "visible" : "hidden" }}
       />
 
-      <button onClick={addPositionHandler}>{texts.addPosition[lang]}</button>
+      <button
+        onClick={addPositionHandler}
+        style={{ visibility: isLogged ? "visible" : "hidden" }}>
+        {texts.addPosition[lang]}
+      </button>
 
-      <hr />
+      <hr style={{ visibility: isLogged ? "visible" : "hidden" }} />
       <div className="categoriesList">
         {positions.map((pos) => (
           <div key={pos.id} className="category">
@@ -110,7 +117,10 @@ export const Positions = () => {
             <div>{pos.title}</div>
             <div>{pos.content}</div>
             <div>{pos.cost}</div>
-            <button onClick={() => deleteHandler(pos.id)}>
+            <button
+              onClick={() => deleteHandler(pos.id)}
+              style={{ visibility: isLogged ? "visible" : "hidden" }}
+              >
               {texts.delete[lang]}
             </button>
           </div>

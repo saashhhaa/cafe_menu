@@ -43,7 +43,6 @@
 //   }
 // });
 
-
 // // DELETE /positions/:id
 // app.delete("/positions/:id", (req, res) => {
 //   const id = Number(req.params.id);
@@ -56,7 +55,6 @@
 //   const deleted = positions.splice(index, 1)[0];
 //   res.json(deleted);
 // });
-
 
 // let categories = [];
 
@@ -91,7 +89,6 @@
 
 // app.listen(5000, () => console.log("Server running on port 5000"));
 
-
 const express = require("express");
 const cors = require("cors");
 const multer = require("multer");
@@ -101,6 +98,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 const upload = multer({ dest: "uploads/" });
+require("./auth")(app);
 
 app.use("/uploads", express.static("uploads"));
 
@@ -110,7 +108,9 @@ app.use("/uploads", express.static("uploads"));
 app.post("/categories", upload.single("image"), (req, res) => {
   const { title } = req.body;
   const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
-  const stmt = db.prepare("INSERT INTO categories (title, imageUrl) VALUES (?, ?)");
+  const stmt = db.prepare(
+    "INSERT INTO categories (title, imageUrl) VALUES (?, ?)"
+  );
   const info = stmt.run(title, imageUrl);
   res.json({ id: info.lastInsertRowid, title, imageUrl });
 });
@@ -121,13 +121,13 @@ app.get("/categories", (req, res) => {
   res.json(rows);
 });
 
-
 // Удаление категории
 app.delete("/categories/:id", (req, res) => {
   const id = Number(req.params.id);
   const stmt = db.prepare("DELETE FROM categories WHERE id = ?");
   const info = stmt.run(id);
-  if (info.changes === 0) return res.status(404).json({ message: "Category not found" });
+  if (info.changes === 0)
+    return res.status(404).json({ message: "Category not found" });
   res.json({ id });
 });
 
@@ -142,7 +142,14 @@ app.post("/positions", upload.single("image"), (req, res) => {
     VALUES (?, ?, ?, ?, ?)
   `);
   const info = stmt.run(title, content, cost, categoryId, imageUrl);
-  res.json({ id: info.lastInsertRowid, title, content, cost, categoryId, imageUrl });
+  res.json({
+    id: info.lastInsertRowid,
+    title,
+    content,
+    cost,
+    categoryId,
+    imageUrl,
+  });
 });
 
 // Получение позиций по категории
@@ -159,7 +166,8 @@ app.delete("/positions/:id", (req, res) => {
   const id = Number(req.params.id);
   const stmt = db.prepare("DELETE FROM positions WHERE id = ?");
   const info = stmt.run(id);
-  if (info.changes === 0) return res.status(404).json({ message: "Position not found" });
+  if (info.changes === 0)
+    return res.status(404).json({ message: "Position not found" });
   res.json({ id });
 });
 

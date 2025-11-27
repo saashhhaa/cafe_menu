@@ -15,5 +15,10 @@ export const texts = {
   setCost: {ru: "Цена", eng: "Cost"},
 
   goBack: {ru: "Вернуться", eng: "Back"},
-  delete: {ru: "Удалить", eng: "Delete"}
+  delete: {ru: "Удалить", eng: "Delete"},
+  logIn: {ru: "Войти в аккаунт", eng: "Log in"},
+  logOut: {ru: "Выйти", eng: "Log out"},
+
+  placePassword: {ru: "Пароль", eng: "Password"},
+  placeLogin: {ru: "Логин", eng: "Login"}
 };

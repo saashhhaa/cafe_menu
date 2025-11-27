@@ -2,8 +2,12 @@ import { useState, useEffect } from "react";
 import { ChangeLanguage } from "../components/ChangeLang";
 import { getLanguage, texts } from "../lang";
 import { Link } from "react-router-dom";
+import { Login } from "../components/Login";
+import { getLogIn } from "../pages/LogInHandle";
 
 export const Categories = () => {
+  const isLogged = getLogIn();
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -22,7 +26,6 @@ export const Categories = () => {
   const [image, setImage] = useState(null);
   const [categories, setCategories] = useState([]);
 
-  // Добавление категории
   const addCategoryHandler = async () => {
     if (!title) return;
 
@@ -47,7 +50,6 @@ export const Categories = () => {
     setImage(null);
   };
 
-  // Удаление категории
   const deleteHandler = async (id) => {
     const res = await fetch(`http://localhost:5000/categories/${id}`, {
       method: "DELETE",
@@ -64,6 +66,7 @@ export const Categories = () => {
   return (
     <>
       <ChangeLanguage />
+      <Login />
       <h2>{texts.pageTitle[lang]}</h2>
 
       <input
@@ -71,15 +74,21 @@ export const Categories = () => {
         placeholder={texts.categoryName[lang]}
         value={title}
         onChange={(e) => setTitle(e.target.value)}
+        style={{ visibility: isLogged ? "visible" : "hidden" }}
       />
       <input
         type="file"
         accept="image/*"
         onChange={(e) => setImage(e.target.files[0])}
+        style={{ visibility: isLogged ? "visible" : "hidden" }}
       />
-      <button onClick={addCategoryHandler}>{texts.addCategory[lang]}</button>
+      <button
+        onClick={addCategoryHandler}
+        style={{ visibility: isLogged ? "visible" : "hidden" }}>
+        {texts.addCategory[lang]}
+      </button>
 
-      <hr />
+      <hr style={{ visibility: isLogged ? "visible" : "hidden" }} />
       <div className="categoriesList">
         {categories.map((cat) => (
           <div key={cat.id} className="category">
@@ -91,7 +100,10 @@ export const Categories = () => {
                 width={100}
               />
             )}
-            <button onClick={() => deleteHandler(cat.id)}>
+
+            <button
+              onClick={() => deleteHandler(cat.id)}
+              style={{ visibility: isLogged ? "visible" : "hidden" }}>
               {texts.delete[lang]}
             </button>
           </div>
