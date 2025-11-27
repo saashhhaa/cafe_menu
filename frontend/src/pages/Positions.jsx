@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { ChangeLanguage } from "../components/ChangeLang";
 import { getLanguage, texts } from "../lang";
 import { getLogIn } from "../pages/LogInHandle";
+import { Login } from "../components/Login";
 
 export const Positions = () => {
   const isLogged = getLogIn();
