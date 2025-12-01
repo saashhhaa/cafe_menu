@@ -2,7 +2,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Language } from "./pages/Language";
 import { Positions } from "./pages/Positions";
 import { Categories } from "./pages/Categories";
-import './style.css';
+// import './style.css';
+import './index.css';
 import { LogInHandler } from "./pages/LogInHandle";
 
 export const App = () => {

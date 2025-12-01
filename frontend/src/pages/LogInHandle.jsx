@@ -9,7 +9,6 @@ export const logOut = () => {
   localStorage.removeItem("isLogged");
 };
 
-
 export const LogInHandler = () => {
   const lang = getLanguage();
   const [login, setLogin] = useState("");
@@ -36,29 +35,28 @@ export const LogInHandler = () => {
 
   return (
     <div className="loginPage">
-      <Link to="/categories">{texts.goBack[lang]}</Link>
-      <input
-        type="text"
-        value={login}
-        placeholder={texts.placeLogin[lang]}
-        onChange={(e) => setLogin(e.target.value)}
-        required
-        style={{ visibility: isLogged ? "hidden" : "visible" }}
-      />
-      <input
-        type="password"
-        placeholder={texts.placePassword[lang]}
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-        style={{ visibility: isLogged ? "hidden" : "visible" }}
-      />
-      <button
-        onClick={logHandler}
-        style={{ visibility: isLogged ? "hidden" : "visible" }}>
-        Войти
-      </button>
-      <h1 style={{ visibility: isLogged ? "visible" : "hidden" }}>
+      <Link className="back" to="/categories">
+        ←
+      </Link>
+      <div className="form" style={{ display: isLogged ? "none" : "block" }}>
+        <input
+          type="text"
+          value={login}
+          placeholder={texts.placeLogin[lang]}
+          onChange={(e) => setLogin(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder={texts.placePassword[lang]}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <button onClick={logHandler}>{texts.logIn[lang]}</button>
+      </div>
+
+      <h1 className="form" style={{ display: isLogged ? "block" : "none" }}>
         Добро пожаловать, {login}!
       </h1>
     </div>

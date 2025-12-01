@@ -9,25 +9,39 @@ export const Positions = () => {
   const isLogged = getLogIn();
   const lang = getLanguage();
   const { categoryId } = useParams();
+  const [cat, setCat] = useState(null);
   const [positions, setPositions] = useState([]);
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [titleRu, setTitleRu] = useState("");
+  const [titleEng, setTitleEng] = useState("");
+  const [contentRu, setContentRu] = useState("");
+  const [contentEng, setContentEng] = useState("");
   const [cost, setCost] = useState(0);
   const [image, setImage] = useState(null);
 
   useEffect(() => {
     if (!categoryId) return;
+
     fetch(`http://localhost:5000/positions?categoryId=${categoryId}`)
       .then((res) => res.json())
       .then((data) => setPositions(data));
+
+    fetch(`http://localhost:5000/categories`)
+      .then((res) => res.json())
+      .then((data) => {
+        const category = data.find((c) => c.id === Number(categoryId));
+        setCat(category);
+      });
   }, [categoryId]);
 
   const addPositionHandler = async () => {
-    if (!title) return;
+    if (!titleRu || !titleEng) return;
 
     const formData = new FormData();
-    formData.append("title", title);
-    formData.append("content", content);
+    formData.append("titleRu", titleRu);
+    formData.append("titleEng", titleEng);
+    formData.append("contentRu", contentRu);
+    formData.append("contentEng", contentEng);
+
     formData.append("cost", cost);
     formData.append("categoryId", categoryId);
     if (image) formData.append("image", image);
@@ -45,8 +59,10 @@ export const Positions = () => {
     const data = await res.json();
     setPositions([...positions, data]);
 
-    setTitle("");
-    setContent("");
+    setTitleRu("");
+    setTitleEng("");
+    setContentRu("");
+    setContentEng("");
     setCost(0);
     setImage(null);
   };
@@ -67,51 +83,71 @@ export const Positions = () => {
   return (
     <div className="positionsPage">
       <nav>
-        <Link to="/categories">{texts.goBack[lang]}</Link>
+        <Link className="back" to="/categories">
+          ←
+        </Link>
         <ChangeLanguage />
         <Login />
       </nav>
 
       <h2>{texts.pageTitle[lang]}</h2>
 
-      <input
-        type="text"
-        placeholder={texts.setName[lang]}
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        style={{ visibility: isLogged ? "visible" : "hidden" }}
-      />
-      <input
-        type="text"
-        placeholder={texts.setContent[lang]}
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-        style={{ visibility: isLogged ? "visible" : "hidden" }}
-      />
-      <input
-        type="number"
-        placeholder={texts.setCost[lang]}
-        value={cost}
-        onChange={(e) => setCost(Number(e.target.value))}
-        style={{ visibility: isLogged ? "visible" : "hidden" }}
-      />
-      <input
-        type="file"
-        accept="image/*"
-        onChange={(e) => setImage(e.target.files[0])}
-        style={{ visibility: isLogged ? "visible" : "hidden" }}
-      />
+      <div
+        className="inputCover"
+        style={{ display: isLogged ? "block" : "none" }}>
+        <input
+          type="text"
+          placeholder={texts.setNameRu[lang]}
+          value={titleRu}
+          onChange={(e) => setTitleRu(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder={texts.setNameEng[lang]}
+          value={titleEng}
+          onChange={(e) => setTitleEng(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder={texts.setContentRu[lang]}
+          value={contentRu}
+          onChange={(e) => setContentRu(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder={texts.setContentEng[lang]}
+          value={contentEng}
+          onChange={(e) => setContentEng(e.target.value)}
+        />
 
-      <button
-        onClick={addPositionHandler}
-        style={{ visibility: isLogged ? "visible" : "hidden" }}>
-        {texts.addPosition[lang]}
-      </button>
+        <input
+          type="number"
+          placeholder={texts.setCost[lang]}
+          value={cost}
+          onChange={(e) => setCost(Number(e.target.value))}
+        />
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => setImage(e.target.files[0])}
+        />
 
-      <hr style={{ visibility: isLogged ? "visible" : "hidden" }} />
-      <div className="categoriesList">
+        <button className="page_button" onClick={addPositionHandler}>
+          {texts.addPosition[lang]}
+        </button>
+      </div>
+
+      <h3>
+        {cat
+          ? lang === "ru"
+            ? cat.titleRu
+            : cat.titleEng
+          : texts.pageTitle[lang]}
+      </h3>
+
+      <div className="positionsList">
         {positions.map((pos) => (
-          <div key={pos.id} className="category">
+          <div key={pos.id} className="position">
             {pos.imageUrl && (
               <img
                 src={`http://localhost:5000${pos.imageUrl}`}
@@ -119,13 +155,18 @@ export const Positions = () => {
                 width={100}
               />
             )}
-            <div>{pos.title}</div>
-            <div>{pos.content}</div>
-            <div>{pos.cost}</div>
+            <div className="title">
+              {lang === "ru" ? pos.titleRu : pos.titleEng}
+            </div>
+            <div className="content">
+              {lang === "ru" ? pos.contentRu : pos.contentEng}
+            </div>
+            <div className="cost">{pos.cost}</div>
             <button
+              className="page_button"
               onClick={() => deleteHandler(pos.id)}
-              style={{ visibility: isLogged ? "visible" : "hidden" }}>
-              {texts.delete[lang]}
+              style={{ display: isLogged ? "block" : "none" }}>
+              🗑️
             </button>
           </div>
         ))}

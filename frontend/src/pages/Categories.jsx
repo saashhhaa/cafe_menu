@@ -22,15 +22,18 @@ export const Categories = () => {
     fetchCategories();
   }, []);
   const lang = getLanguage();
-  const [title, setTitle] = useState("");
+  const [titleRu, setTitleRu] = useState("");
+  const [titleEng, setTitleEng] = useState("");
   const [image, setImage] = useState(null);
   const [categories, setCategories] = useState([]);
 
   const addCategoryHandler = async () => {
-    if (!title) return;
+    if (!titleRu || !titleEng) return;
 
     const formData = new FormData();
-    formData.append("title", title);
+    formData.append("titleRu", titleRu);
+    formData.append("titleEng", titleEng);
+
     if (image) formData.append("image", image);
 
     const res = await fetch("http://localhost:5000/categories", {
@@ -46,7 +49,8 @@ export const Categories = () => {
     const data = await res.json();
     setCategories([...categories, data]);
 
-    setTitle("");
+    setTitleRu("");
+    setTitleEng("");
     setImage(null);
   };
 
@@ -72,30 +76,38 @@ export const Categories = () => {
 
       <h2>{texts.pageTitle[lang]}</h2>
 
-      <input
-        type="text"
-        placeholder={texts.categoryName[lang]}
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        style={{ visibility: isLogged ? "visible" : "hidden" }}
-      />
-      <input
-        type="file"
-        accept="image/*"
-        onChange={(e) => setImage(e.target.files[0])}
-        style={{ visibility: isLogged ? "visible" : "hidden" }}
-      />
-      <button
-        onClick={addCategoryHandler}
-        style={{ visibility: isLogged ? "visible" : "hidden" }}>
-        {texts.addCategory[lang]}
-      </button>
+      <div className="inputCover" style={{ display: isLogged ? "block" : "none" }}>
+        <input
+          type="text"
+          placeholder={texts.setNameRu[lang]}
+          value={titleRu}
+          onChange={(e) => setTitleRu(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder={texts.setNameEng[lang]}
+          value={titleEng}
+          onChange={(e) => setTitleEng(e.target.value)}
+        />
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => setImage(e.target.files[0])}
+        />
+        <button
+          className="page_button"
+          onClick={addCategoryHandler}
+          >
+          {texts.addCategory[lang]}
+        </button>
+      </div>
 
-      <hr style={{ visibility: isLogged ? "visible" : "hidden" }} />
       <div className="categoriesList">
         {categories.map((cat) => (
           <div key={cat.id} className="category">
-            <Link to={`/categories/${cat.id}`}>{cat.title}</Link>
+            <Link to={`/categories/${cat.id}`}>
+              <div>{lang === "ru" ? cat.titleRu : cat.titleEng}</div>
+            </Link>
             {cat.imageUrl && (
               <img
                 src={`http://localhost:5000${cat.imageUrl}`}
@@ -105,10 +117,10 @@ export const Categories = () => {
             )}
 
             <button
-              className=""
+              className="page_button"
               onClick={() => deleteHandler(cat.id)}
-              style={{ visibility: isLogged ? "visible" : "hidden" }}>
-              {texts.delete[lang]}
+              style={{ display: isLogged ? "block" : "none" }}>
+              🗑️
             </button>
           </div>
         ))}

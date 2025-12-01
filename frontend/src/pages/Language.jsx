@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
+import { texts, getLanguage } from "../lang";
 
 export const Language = () => {
+  const lang = getLanguage();
+
   const ruHandler = () => {
     localStorage.setItem("lang", "ru");
   };
@@ -10,12 +13,16 @@ export const Language = () => {
 
   return (
     <div className="langPage">
-      <Link to="/categories" onClick={ruHandler}>
-        Русский
-      </Link>
-      <Link to="/categories" onClick={engHandler}>
-        English
-      </Link>
+      <h1>{texts.welcome[lang]}</h1>
+      <div className="cover">
+        <Link className="link" to="/categories" onClick={ruHandler}>
+          Русский
+        </Link>
+        <Link className="link" to="/categories" onClick={engHandler}>
+          English
+        </Link>
+      </div>
+        <video src="public/back.mp4" autoPlay muted loop playsInline />
     </div>
   );
 };

@@ -106,14 +106,24 @@ app.use("/uploads", express.static("uploads"));
 
 // Добавление категории
 app.post("/categories", upload.single("image"), (req, res) => {
-  const { title } = req.body;
+  const { titleRu, titleEng } = req.body;
   const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
-  const stmt = db.prepare(
-    "INSERT INTO categories (title, imageUrl) VALUES (?, ?)"
-  );
-  const info = stmt.run(title, imageUrl);
-  res.json({ id: info.lastInsertRowid, title, imageUrl });
+
+  const stmt = db.prepare(`
+    INSERT INTO categories (titleRu, titleEng, imageUrl)
+    VALUES (?, ?, ?)
+  `);
+
+  const info = stmt.run(titleRu, titleEng, imageUrl);
+
+  res.json({
+    id: info.lastInsertRowid,
+    titleRu,
+    titleEng,
+    imageUrl
+  });
 });
+
 
 // Получение всех категорий
 app.get("/categories", (req, res) => {
@@ -133,24 +143,29 @@ app.delete("/categories/:id", (req, res) => {
 
 // ===================== POSITIONS =====================
 
-// Добавление позиции
 app.post("/positions", upload.single("image"), (req, res) => {
-  const { title, content, cost, categoryId } = req.body;
+  const { titleRu, titleEng, contentRu, contentEng, cost, categoryId } = req.body;
   const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
+
   const stmt = db.prepare(`
-    INSERT INTO positions (title, content, cost, categoryId, imageUrl) 
-    VALUES (?, ?, ?, ?, ?)
+    INSERT INTO positions (titleRu, titleEng, contentRu, contentEng, cost, categoryId, imageUrl)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
   `);
-  const info = stmt.run(title, content, cost, categoryId, imageUrl);
+
+  const info = stmt.run(titleRu, titleEng, contentRu, contentEng, cost, categoryId, imageUrl);
+
   res.json({
     id: info.lastInsertRowid,
-    title,
-    content,
+    titleRu,
+    titleEng,
+    contentRu,
+    contentEng,
     cost,
     categoryId,
-    imageUrl,
+    imageUrl
   });
 });
+
 
 // Получение позиций по категории
 app.get("/positions", (req, res) => {
