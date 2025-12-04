@@ -10,7 +10,6 @@ a {
 }
 
 .langPage {
-  /* background-image: url("./public/back.jpg"); */
   background-repeat: no-repeat;
   background-size: cover;
   display: flex;
@@ -46,10 +45,12 @@ a {
   padding: 10px 20px;
   border: 2px solid #ffffff;
   border-radius: 10px;
+  transition: all .2s;
 }
 
-.link:hover {
-  transform: translateY(-5px);
+
+.langPage .link:hover {
+  transform: scale(1.2);
   filter: brightness(2);
 }
 
@@ -331,4 +332,148 @@ button {
 
 .loginPage a:hover {
   color: #c79f66;
+}
+
+/* Общие правки */
+h1, h2 {
+  font-size: 36px;
+  margin-top: 3vh;
+}
+
+nav {
+  padding: 3vh 5vw;
+  margin-bottom: 5vh;
+}
+
+.langPage h1 {
+  font-size: 32px;
+}
+
+video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Главный адаптив */
+@media (max-width: 768px) {
+
+  /* Главная страница выбора языка */
+  .langPage {
+    padding: 0 5vw;
+  }
+
+  .langPage .cover {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .langPage .link {
+    font-size: 18px;
+    padding: 10px 20px;
+  }
+
+  /* Гриды категорий и позиций */
+  .categoriesList,
+  .positionsList {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 5vh;
+  }
+
+  /* Категория */
+  .category,
+  .position {
+    height: auto;
+    padding: 3vh 2vw;
+  }
+
+  .category img,
+  .position img {
+    height: 150px;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .category a {
+    font-size: 20px;
+  }
+
+  .position .title {
+    font-size: 18px;
+  }
+
+  h3 {
+    font-size: 24px;
+  }
+
+  .position .content {
+    font-size: 14px;
+  }
+
+  .position .cost {
+    font-size: 16px;
+  }
+
+  /* Форма добавления / редактирования */
+  .inputCover {
+    width: 95%;
+    padding: 3vh 4vw;
+  }
+
+  .inputCover input {
+    width: 100%;
+  }
+
+  /* Логин */
+  .loginPage .form {
+    padding: 3vh 5vw;
+    width: 90%;
+  }
+
+  .loginPage h1 {
+    font-size: 20px;
+  }
+
+  .loginPage button {
+    font-size: 14px;
+  }
+}
+
+.fade-in {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1s ease, transform 1s ease;
+}
+
+.fade-in.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* .bunner{ */
+  
+
+.bannerSlide {
+  display: flex;
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+}
+
+.bannerSlide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bannerTitle {
+  position: absolute;
+  bottom: 10px;
+  left: 15px;
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 0 6px rgba(0,0,0,0.7);
 }

@@ -37,4 +37,14 @@ db.prepare(`
   VALUES ('admin', '1234')
 `).run();
 
+db.prepare(`
+  CREATE TABLE IF NOT EXISTS banners (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    titleRu TEXT,
+    titleEng TEXT,
+    imageUrl TEXT
+  )
+`).run();
+
+
 module.exports = db;

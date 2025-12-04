@@ -4,9 +4,18 @@ import { getLanguage, texts } from "../lang";
 import { Link } from "react-router-dom";
 import { Login } from "../components/Login";
 import { getLogIn } from "../pages/LogInHandle";
+import { showEl } from "../animation";
+import { Banner } from "../components/Banner";
 
 export const Categories = () => {
   const isLogged = getLogIn();
+  const [banners, setBanners] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/banners")
+      .then((res) => res.json())
+      .then((data) => setBanners(data));
+  }, []);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -21,6 +30,11 @@ export const Categories = () => {
 
     fetchCategories();
   }, []);
+
+  useEffect(() => {
+    showEl();
+  }, []);
+
   const lang = getLanguage();
   const [titleRu, setTitleRu] = useState("");
   const [titleEng, setTitleEng] = useState("");
@@ -67,16 +81,95 @@ export const Categories = () => {
     setCategories(categories.filter((cat) => cat.id !== id));
   };
 
+  const [bannerTitleRu, setBannerTitleRu] = useState("");
+  const [bannerTitleEng, setBannerTitleEng] = useState("");
+  const [bannerImage, setBannerImage] = useState(null);
+
+  const addBannerHandler = async () => {
+    const formData = new FormData();
+    formData.append("titleRu", bannerTitleRu);
+    formData.append("titleEng", bannerTitleEng);
+    formData.append("image", bannerImage);
+
+    const res = await fetch("http://localhost:5000/banners", {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await res.json();
+    setBanners([...banners, data]);
+
+    setBannerTitleRu("");
+    setBannerTitleEng("");
+    setBannerImage(null);
+  };
+
+  const deleteBanner = async (id) => {
+    const confirmDel = window.confirm("Вы точно хотите удалить баннер?");
+    if (!confirmDel) return;
+
+    const res = await fetch(`http://localhost:5000/banners/${id}`, {
+      method: "DELETE",
+    });
+
+    if (!res.ok) {
+      alert("Не удалось удалить баннер");
+      return;
+    }
+
+    setBanners(banners.filter((b) => b.id !== id));
+  };
+
   return (
     <div className="categoryPage">
-      <nav>
+      <nav className="fade-in">
         <ChangeLanguage />
+        {localStorage.getItem("userDiscount") ? (
+          <span style={{fontWeight:"900"}}>
+            {texts.yourDiscount[lang]}: {localStorage.getItem("userDiscount")}%
+          </span>
+        ) : (
+          <Link to="/game">{texts.game[lang]}</Link>
+        )}
         <Login />
       </nav>
 
-      <h2>{texts.pageTitle[lang]}</h2>
+      <div
+        className="inputCover fade-in"
+        style={{ display: isLogged ? "block" : "none" }}>
+        <input
+          type="text"
+          placeholder={texts.setNameRu[lang]}
+          value={bannerTitleRu}
+          onChange={(e) => setBannerTitleRu(e.target.value)}
+        />
 
-      <div className="inputCover" style={{ display: isLogged ? "block" : "none" }}>
+        <input
+          type="text"
+          placeholder={texts.setNameEng[lang]}
+          value={bannerTitleEng}
+          onChange={(e) => setBannerTitleEng(e.target.value)}
+        />
+
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => setBannerImage(e.target.files[0])}
+        />
+
+        <button onClick={addBannerHandler}>{texts.addBunner[lang]}</button>
+      </div>
+      <Banner
+        banners={banners}
+        lang={lang}
+        isLogged={isLogged}
+        deleteBanner={deleteBanner}
+      />
+      <h2 className="fade-in">{texts.pageTitle[lang]}</h2>
+
+      <div
+        className="inputCover fade-in"
+        style={{ display: isLogged ? "block" : "none" }}>
         <input
           type="text"
           placeholder={texts.setNameRu[lang]}
@@ -94,15 +187,12 @@ export const Categories = () => {
           accept="image/*"
           onChange={(e) => setImage(e.target.files[0])}
         />
-        <button
-          className="page_button"
-          onClick={addCategoryHandler}
-          >
+        <button className="page_button" onClick={addCategoryHandler}>
           {texts.addCategory[lang]}
         </button>
       </div>
 
-      <div className="categoriesList">
+      <div className="categoriesList fade-in">
         {categories.map((cat) => (
           <div key={cat.id} className="category">
             <Link to={`/categories/${cat.id}`}>

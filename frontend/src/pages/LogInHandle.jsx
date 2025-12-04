@@ -1,6 +1,7 @@
 import { getLanguage, texts } from "../lang";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { showEl } from "../animation";
 
 export const getLogIn = () => {
   return localStorage.getItem("isLogged") || false;
@@ -10,6 +11,10 @@ export const logOut = () => {
 };
 
 export const LogInHandler = () => {
+  useEffect(() => {
+    showEl();
+  }, []);
+
   const lang = getLanguage();
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
@@ -35,10 +40,10 @@ export const LogInHandler = () => {
 
   return (
     <div className="loginPage">
-      <Link className="back" to="/categories">
+      <Link className="back fade-in" to="/categories">
         ←
       </Link>
-      <div className="form" style={{ display: isLogged ? "none" : "block" }}>
+      <div className="form fade-in" style={{ display: isLogged ? "none" : "block" }}>
         <input
           type="text"
           value={login}
@@ -56,8 +61,8 @@ export const LogInHandler = () => {
         <button onClick={logHandler}>{texts.logIn[lang]}</button>
       </div>
 
-      <h1 className="form" style={{ display: isLogged ? "block" : "none" }}>
-        Добро пожаловать, {login}!
+      <h1 className="form fade-in" style={{ display: isLogged ? "block" : "none" }}>
+        {texts.welcomeAdmin[lang]}, {login}!
       </h1>
     </div>
   );

@@ -4,6 +4,8 @@ import { ChangeLanguage } from "../components/ChangeLang";
 import { getLanguage, texts } from "../lang";
 import { getLogIn } from "../pages/LogInHandle";
 import { Login } from "../components/Login";
+import { showEl } from "../animation";
+
 
 export const Positions = () => {
   const isLogged = getLogIn();
@@ -32,6 +34,10 @@ export const Positions = () => {
         setCat(category);
       });
   }, [categoryId]);
+
+  useEffect(() => {
+    showEl();
+  }, []);
 
   const addPositionHandler = async () => {
     if (!titleRu || !titleEng) return;
@@ -81,21 +87,28 @@ export const Positions = () => {
   };
 
   return (
-    <div className="positionsPage">
+    <div className="positionsPage fade-in">
       <nav>
         <Link className="back" to="/categories">
           ←
         </Link>
+        {localStorage.getItem("userDiscount") ? (
+          <span style={{fontWeight:"900"}}>
+            {texts.yourDiscount[lang]}: {localStorage.getItem("userDiscount")}%
+          </span>
+        ) : (
+          <Link to="/game">{texts.game[lang]}</Link>
+        )}
         <ChangeLanguage />
         <Login />
       </nav>
 
-      <h2>{texts.pageTitle[lang]}</h2>
+      <h2 className="fade-in">{texts.pageTitle[lang]}</h2>
 
       <div
-        className="inputCover"
+        className="inputCover fade-in"
         style={{ display: isLogged ? "block" : "none" }}>
-        <input
+        <input 
           type="text"
           placeholder={texts.setNameRu[lang]}
           value={titleRu}
@@ -132,12 +145,12 @@ export const Positions = () => {
           onChange={(e) => setImage(e.target.files[0])}
         />
 
-        <button className="page_button" onClick={addPositionHandler}>
+        <button className="page_button " onClick={addPositionHandler}>
           {texts.addPosition[lang]}
         </button>
       </div>
 
-      <h3>
+      <h3 className="fade-in">
         {cat
           ? lang === "ru"
             ? cat.titleRu
@@ -145,7 +158,7 @@ export const Positions = () => {
           : texts.pageTitle[lang]}
       </h3>
 
-      <div className="positionsList">
+      <div className="positionsList fade-in">
         {positions.map((pos) => (
           <div key={pos.id} className="position">
             {pos.imageUrl && (

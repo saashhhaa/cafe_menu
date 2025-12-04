@@ -1,94 +1,3 @@
-// const express = require("express");
-// const cors = require("cors");
-// const multer = require("multer");
-
-// const app = express();
-// app.use(cors());
-// app.use(express.json());
-
-// const upload = multer({ dest: "uploads/" });
-
-// let positions = [];
-
-// app.post("/positions", upload.single("image"), (req, res) => {
-//   try {
-//     const { title, content, cost, categoryId } = req.body;
-//     const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
-
-//     const newPosition = {
-//       id: Date.now(),
-//       title,
-//       content,
-//       cost: Number(cost),
-//       categoryId,
-//       imageUrl,
-//     };
-
-//     positions.push(newPosition);
-
-//     res.json(newPosition); // важный момент — верни объект JSON
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ error: "Something went wrong" });
-//   }
-// });
-
-// // GET /positions?categoryId=...
-// app.get("/positions", (req, res) => {
-//   const { categoryId } = req.query;
-//   if (categoryId) {
-//     res.json(positions.filter(p => p.categoryId === categoryId));
-//   } else {
-//     res.json(positions);
-//   }
-// });
-
-// // DELETE /positions/:id
-// app.delete("/positions/:id", (req, res) => {
-//   const id = Number(req.params.id);
-//   const index = positions.findIndex((p) => p.id === id);
-
-//   if (index === -1) {
-//     return res.status(404).json({ message: "Position not found" });
-//   }
-
-//   const deleted = positions.splice(index, 1)[0];
-//   res.json(deleted);
-// });
-
-// let categories = [];
-
-// app.post("/categories", upload.single("image"), (req, res) => {
-//   const { title } = req.body;
-//   const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
-
-//   const newCategory = {
-//     id: Date.now(),
-//     title,
-//     imageUrl,
-//   };
-
-//   categories.push(newCategory);
-//   res.json(newCategory);
-// });
-
-// // DELETE /categories/:id
-// app.delete("/categories/:id", (req, res) => {
-//   const id = Number(req.params.id); // или String, если id хранится как строка
-//   const index = categories.findIndex((cat) => cat.id === id);
-
-//   if (index === -1) {
-//     return res.status(404).json({ message: "Category not found" });
-//   }
-
-//   const deletedCategory = categories.splice(index, 1)[0];
-//   res.json(deletedCategory);
-// });
-
-// app.use("/uploads", express.static("uploads"));
-
-// app.listen(5000, () => console.log("Server running on port 5000"));
-
 const express = require("express");
 const cors = require("cors");
 const multer = require("multer");
@@ -104,7 +13,6 @@ app.use("/uploads", express.static("uploads"));
 
 // ===================== CATEGORIES =====================
 
-// Добавление категории
 app.post("/categories", upload.single("image"), (req, res) => {
   const { titleRu, titleEng } = req.body;
   const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
@@ -120,18 +28,15 @@ app.post("/categories", upload.single("image"), (req, res) => {
     id: info.lastInsertRowid,
     titleRu,
     titleEng,
-    imageUrl
+    imageUrl,
   });
 });
 
-
-// Получение всех категорий
 app.get("/categories", (req, res) => {
   const rows = db.prepare("SELECT * FROM categories").all();
   res.json(rows);
 });
 
-// Удаление категории
 app.delete("/categories/:id", (req, res) => {
   const id = Number(req.params.id);
   const stmt = db.prepare("DELETE FROM categories WHERE id = ?");
@@ -144,7 +49,8 @@ app.delete("/categories/:id", (req, res) => {
 // ===================== POSITIONS =====================
 
 app.post("/positions", upload.single("image"), (req, res) => {
-  const { titleRu, titleEng, contentRu, contentEng, cost, categoryId } = req.body;
+  const { titleRu, titleEng, contentRu, contentEng, cost, categoryId } =
+    req.body;
   const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
 
   const stmt = db.prepare(`
@@ -152,7 +58,15 @@ app.post("/positions", upload.single("image"), (req, res) => {
     VALUES (?, ?, ?, ?, ?, ?, ?)
   `);
 
-  const info = stmt.run(titleRu, titleEng, contentRu, contentEng, cost, categoryId, imageUrl);
+  const info = stmt.run(
+    titleRu,
+    titleEng,
+    contentRu,
+    contentEng,
+    cost,
+    categoryId,
+    imageUrl
+  );
 
   res.json({
     id: info.lastInsertRowid,
@@ -162,12 +76,10 @@ app.post("/positions", upload.single("image"), (req, res) => {
     contentEng,
     cost,
     categoryId,
-    imageUrl
+    imageUrl,
   });
 });
 
-
-// Получение позиций по категории
 app.get("/positions", (req, res) => {
   const { categoryId } = req.query;
   const rows = categoryId
@@ -176,7 +88,6 @@ app.get("/positions", (req, res) => {
   res.json(rows);
 });
 
-// Удаление позиции
 app.delete("/positions/:id", (req, res) => {
   const id = Number(req.params.id);
   const stmt = db.prepare("DELETE FROM positions WHERE id = ?");
@@ -185,5 +96,54 @@ app.delete("/positions/:id", (req, res) => {
     return res.status(404).json({ message: "Position not found" });
   res.json({ id });
 });
+
+// banners
+
+app.post("/banners", upload.single("image"), (req, res) => {
+  try {
+    const { titleRu, titleEng } = req.body;
+    const imageUrl = "/uploads/" + req.file.filename;
+
+    const stmt = db.prepare(`
+      INSERT INTO banners (titleRu, titleEng, imageUrl)
+      VALUES (?, ?, ?)
+    `);
+
+    const result = stmt.run(titleRu, titleEng, imageUrl);
+
+    res.json({
+      id: result.lastInsertRowid,
+      titleRu,
+      titleEng,
+      imageUrl,
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ error: "Failed to add banner" });
+  }
+});
+
+app.get("/banners", (req, res) => {
+  const banners = db.prepare("SELECT * FROM banners").all();
+  res.json(banners);
+});
+
+app.delete("/banners/:id", (req, res) => {
+  const { id } = req.params;
+  try {
+    const stmt = db.prepare("DELETE FROM banners WHERE id = ?");
+    const info = stmt.run(id);
+
+    if (info.changes === 0) {
+      return res.status(404).json({ error: "Banner not found" });
+    }
+
+    res.json({ success: true });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "Failed to delete banner" });
+  }
+});
+
 
 app.listen(5000, () => console.log("Server running on port 5000"));

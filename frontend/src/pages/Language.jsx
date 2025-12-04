@@ -1,8 +1,14 @@
+import { useEffect } from "react";
+import { showEl } from "../animation";
 import { Link } from "react-router-dom";
 import { texts, getLanguage } from "../lang";
 
 export const Language = () => {
   const lang = getLanguage();
+
+  useEffect(() => {
+    showEl();
+  }, []);
 
   const ruHandler = () => {
     localStorage.setItem("lang", "ru");
@@ -13,16 +19,16 @@ export const Language = () => {
 
   return (
     <div className="langPage">
-      <h1>{texts.welcome[lang]}</h1>
+      <h1 className="fade-in">{texts.welcome[lang]}</h1>
       <div className="cover">
-        <Link className="link" to="/categories" onClick={ruHandler}>
+        <Link className="link fade-in" to="/categories" onClick={ruHandler}>
           Русский
         </Link>
-        <Link className="link" to="/categories" onClick={engHandler}>
+        <Link className="link fade-in" to="/categories" onClick={engHandler}>
           English
         </Link>
       </div>
-        <video src="public/back.mp4" autoPlay muted loop playsInline />
+      <video src="/cafe_menu/back.mp4" autoPlay muted loop playsInline />
     </div>
   );
 };
