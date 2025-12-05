@@ -62,6 +62,9 @@ export const Banner = ({ banners, lang, isLogged, deleteBanner }) => {
                   position: "absolute",
                   top: "10px",
                   right: "10px",
+                  fontSize: "32px",
+                  borderRadius: "20px",
+                  padding: "10px",
                   zIndex: 10,
                 }}
               >
