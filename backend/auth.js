@@ -11,10 +11,5 @@ module.exports = function (app) {
     if (!user) {
       return res.status(401).json({ message: 'Incorrect data' });
     }
-
-    res.json({
-      message: 'Success',
-      username: user.login
-    });
   });
 };

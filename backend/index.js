@@ -11,7 +11,7 @@ require("./auth")(app);
 
 app.use("/uploads", express.static("uploads"));
 
-// ===================== CATEGORIES =====================
+// === CATEGORIES====
 
 app.post("/categories", upload.single("image"), (req, res) => {
   const { titleRu, titleEng } = req.body;
@@ -46,7 +46,7 @@ app.delete("/categories/:id", (req, res) => {
   res.json({ id });
 });
 
-// ===================== POSITIONS =====================
+// === POSITIONS ====
 
 app.post("/positions", upload.single("image"), (req, res) => {
   const { titleRu, titleEng, contentRu, contentEng, cost, categoryId } =

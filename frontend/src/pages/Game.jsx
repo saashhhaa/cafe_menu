@@ -27,7 +27,7 @@ export const Game = () => {
     if (holeIndex === activeHole && !gameOver) {
       setScore(score + 1);
       setActiveHole(null);
-      setReactionTime(Math.max(reactionTime - 50, 100));
+      setReactionTime(Math.max(reactionTime - 20, 100));
     }
   };
 
@@ -56,15 +56,6 @@ export const Game = () => {
       setTimeout(() => navigate("/categories"), 5000);
     }
   }, [timeLeft, gameOver, score, navigate]);
-
-  const resetGame = () => {
-    setScore(0);
-    setActiveHole(null);
-    setGameOver(false);
-    setReactionTime(300);
-    setTimeLeft(30);
-    setDiscount(0);
-  };
 
   return (
     <div style={{ textAlign: "center", fontFamily: "Arial, sans-serif" }}>

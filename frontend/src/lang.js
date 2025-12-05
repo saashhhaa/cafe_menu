@@ -24,32 +24,11 @@ export const texts = {
 
   placePassword: { ru: "Пароль", eng: "Password" },
   placeLogin: { ru: "Логин", eng: "Login" },
-  gameTitle: {
-    ru: 'Игра "Бей крота"',
-    eng: "Whack-a-Mole Game",
-  },
-  score: {
-    ru: "Очки",
-    eng: "Score",
-  },
-  timeLeft: {
-    ru: "Время осталось",
-    eng: "Time left",
-  },
-  gameOver: {
-    ru: "Игра завершена!",
-    eng: "Game Over!",
-  },
-  yourDiscount: {
-    ru: "Ваша скидка",
-    eng: "Your discount",
-  },
-  playAgain: {
-    ru: "Играть заново",
-    eng: "Play Again",
-  },
-  start: {
-    ru: "Старт!",
-    eng: "Start!",
-  },
+  gameTitle: { ru: 'Игра "Бей крота"', eng: "Whack-a-Mole Game"},
+  score: { ru: "Очки", eng: "Score"},
+  timeLeft: { ru: "Время осталось", eng: "Time left"},
+  gameOver: { ru: "Игра завершена!", eng: "Game Over!"},
+  yourDiscount: { ru: "Ваша скидка", eng: "Your discount"},
+  playAgain: { ru: "Играть заново", eng: "Play Again"},
+  start: { ru: "Старт!", eng: "Start!"}
 };

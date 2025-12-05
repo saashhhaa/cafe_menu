@@ -66,8 +66,6 @@ video {
 body {
   background: #f5f1eb;
   color: #3b2f2f;
-  /* width: 100vw; */
-  /* display: flex; */
 }
 
 body::-webkit-scrollbar {
@@ -251,7 +249,6 @@ button {
   transform: translateY(-2px);
 }
 
-/* Login Page */
 
 .loginPage .back {
   position: absolute;
@@ -334,7 +331,6 @@ button {
   color: #c79f66;
 }
 
-/* Общие правки */
 h1, h2 {
   font-size: 36px;
   margin-top: 3vh;
@@ -355,10 +351,8 @@ video {
   object-fit: cover;
 }
 
-/* Главный адаптив */
 @media (max-width: 768px) {
 
-  /* Главная страница выбора языка */
   .langPage {
     padding: 0 5vw;
   }
@@ -373,7 +367,6 @@ video {
     padding: 10px 20px;
   }
 
-  /* Гриды категорий и позиций */
   .categoriesList,
   .positionsList {
     grid-template-columns: repeat(2, 1fr);
@@ -381,7 +374,6 @@ video {
     margin-top: 5vh;
   }
 
-  /* Категория */
   .category,
   .position {
     height: auto;
@@ -415,7 +407,6 @@ video {
     font-size: 16px;
   }
 
-  /* Форма добавления / редактирования */
   .inputCover {
     width: 95%;
     padding: 3vh 4vw;
@@ -425,7 +416,6 @@ video {
     width: 100%;
   }
 
-  /* Логин */
   .loginPage .form {
     padding: 3vh 5vw;
     width: 90%;
@@ -450,9 +440,6 @@ video {
     opacity: 1;
     transform: translateY(0);
 }
-
-/* .bunner{ */
-  
 
 .bannerSlide {
   display: flex;
