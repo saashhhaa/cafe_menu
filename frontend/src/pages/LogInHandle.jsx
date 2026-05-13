@@ -1,69 +1,106 @@
 import { getLanguage, texts } from "../lang";
-import { Link } from "react-router-dom";
+import { Link} from "react-router-dom";
 import { useState, useEffect } from "react";
 import { showEl } from "../animation";
-
-export const getLogIn = () => {
-  return localStorage.getItem("isLogged") || false;
-};
-export const logOut = () => {
-  localStorage.removeItem("isLogged");
-};
 
 export const LogInHandler = () => {
   useEffect(() => {
     showEl();
   }, []);
 
+  // const navigate = useNavigate();
+
   const lang = getLanguage();
+
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
-  const [isLogged, setIsLogged] = useState(false);
 
-  const logHandler = async () => {
-    const res = await fetch("http://localhost:5000/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ login, password }),
-    });
+  const [isLogged, setIsLogged] = useState(
+    localStorage.getItem("isLogged") === "true"
+  );
 
-    if (!res.ok) {
-      alert("Error");
+  async function logHandler() {
+  try {
+    const response = await fetch(
+      "http://localhost:5000/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          login,
+          password,
+        }),
+      }
+    );
+
+    const data = await response.json();
+
+    console.log(data);
+
+    if (!response.ok) {
+      alert(data.message);
       return;
     }
 
-    const data = await res.json();
+    localStorage.setItem("isLogged", "true");
+localStorage.setItem("adminLogin", login);
 
-    localStorage.setItem("isLogged", true);
-    setIsLogged(true);
-  };
+setIsLogged(true);
+    alert("Successful login");
+
+    window.location.reload();
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+  function handleLogout() {
+    localStorage.removeItem("isLogged");
+    localStorage.removeItem("adminLogin");
+
+    setIsLogged(false);
+  }
 
   return (
     <div className="loginPage">
       <Link className="back fade-in" to="/categories">
         ←
       </Link>
-      <div className="form fade-in" style={{ display: isLogged ? "none" : "block" }}>
-        <input
-          type="text"
-          value={login}
-          placeholder={texts.placeLogin[lang]}
-          onChange={(e) => setLogin(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder={texts.placePassword[lang]}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button onClick={logHandler}>{texts.logIn[lang]}</button>
-      </div>
 
-      <h1 className="form fade-in" style={{ display: isLogged ? "block" : "none" }}>
-        {texts.welcomeAdmin[lang]}, {login}!
-      </h1>
+      {!isLogged ? (
+        <div className="form fade-in">
+          <input
+            type="text"
+            value={login}
+            placeholder={texts.placeLogin[lang]}
+            onChange={(e) => setLogin(e.target.value)}
+          />
+
+          <input
+            type="password"
+            placeholder={texts.placePassword[lang]}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
+          <button type='submit' onClick={logHandler}>
+            {texts.logIn[lang]}
+          </button>
+        </div>
+      ) : (
+        <div className="form fade-in">
+          <h1>
+            {texts.welcomeAdmin[lang]},{" "}
+            {localStorage.getItem("adminLogin")}!
+          </h1>
+
+          <button onClick={handleLogout}>
+            {texts.logOut[lang]}
+          </button>
+        </div>
+      )}
     </div>
   );
 };

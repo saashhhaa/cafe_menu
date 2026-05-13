@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ChangeLanguage } from "../components/ChangeLang";
 import { getLanguage, texts } from "../lang";
-import { getLogIn } from "../pages/LogInHandle";
-import { Login } from "../components/Login";
+// import { getLogIn } from "../pages/LogInHandle";
+// import { Login } from "../components/Login";
 import { showEl } from "../animation";
 
 
 export const Positions = () => {
-  const isLogged = getLogIn();
+  const isLogged =
+  localStorage.getItem("isLogged") === "true";
   const lang = getLanguage();
   const { categoryId } = useParams();
   const [cat, setCat] = useState(null);
@@ -100,7 +101,7 @@ export const Positions = () => {
           <Link to="/game">{texts.game[lang]}</Link>
         )}
         <ChangeLanguage />
-        <Login />
+        {/* <Login /> */}
       </nav>
 
       <h2 className="fade-in">{texts.pageTitle[lang]}</h2>
